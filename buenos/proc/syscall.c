@@ -53,7 +53,8 @@
 #define V0 user_context->cpu_regs[MIPS_REGISTER_V0]
 
 int syscall_kill(pid_t pid, int retval) {
-
+  KERNEL_PANIC("ERROR::syscall_kill(pid_t, int) not yet implemented.\n");
+  return -1000;
 }
 
 /**
@@ -108,6 +109,10 @@ void syscall_handle(context_t *user_context)
   case SYSCALL_RAND:
     V0 = syscall_rand((uint32_t)A1);
   break;
+  case SYSCALL_KILL:
+    V0 = syscall_kill((pid_t)A1, (int)A2);
+  break;
+
     /* Memory allocation */
   case SYSCALL_MEMLIMIT:
     V0 = process_memlimit(A1);
