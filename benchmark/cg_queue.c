@@ -1,6 +1,6 @@
 /* A thread-safe coarse-grained queue. */
 
-#include <error.h> // perror
+// #include <error.h> // perror
 #include <errno.h> // ENOMEM
 #include <stdio.h> // printf
 #include <stdlib.h> // malloc
@@ -48,7 +48,7 @@ static inline void unlock_or_die(pthread_mutex_t *mtx) {
  * pthread_mutex_lock(). Kills the host if the mutex locked in this function
  * cannot be unlocked.
  */
-int queue_put(cg_queue_t* q, void* item) {
+int cg_queue_put(cg_queue_t* q, void* item) {
   int ret;
 
   /* Allocate memory to a node and assign its elements. */
@@ -81,7 +81,7 @@ int queue_put(cg_queue_t* q, void* item) {
  * if the queue is empty, or an error occurred. Kills the host if the mutex
  * locked in this function cannot be unlocked.
  */
-void* queue_get(cg_queue_t* q) {
+void* cg_queue_get(cg_queue_t* q) {
   int ret;
   void *item;
   cg_node_t *old;

@@ -1,6 +1,6 @@
 /* A thread-safe fine-grained queue. */
 
-#include <error.h> // perror
+// #include <error.h> // perror
 #include <errno.h> // ENOMEM
 #include <stdio.h> // printf
 #include <stdlib.h> // malloc
@@ -61,7 +61,7 @@ int fg_queue_init(fg_queue_t* q) {
  * pthread_mutex_lock(). Kills the host if the mutex locked in this function
  * cannot be unlocked.
  */
-int queue_put(fg_queue_t* q, void* item) {
+int fg_queue_put(fg_queue_t* q, void* item) {
   int ret;
 
   /* Allocate memory to a node and assign its elements. */
@@ -94,7 +94,7 @@ int queue_put(fg_queue_t* q, void* item) {
  * if the queue is empty, or an error occurred. Kills the host if the mutex
  * locked in this function cannot be unlocked.
  */
-void* queue_get(fg_queue_t* q) {
+void* fg_queue_get(fg_queue_t* q) {
   int ret;
   void *item;
   fg_node_t *old;
