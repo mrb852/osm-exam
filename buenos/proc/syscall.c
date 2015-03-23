@@ -52,7 +52,15 @@
 #define A3 user_context->cpu_regs[MIPS_REGISTER_A3]
 #define V0 user_context->cpu_regs[MIPS_REGISTER_V0]
 
+int syscall_kill(pid_t pid, int retval) {
 
+}
+
+/**
+ * Generates a pseudo random number between 0 and range - 1
+ * @param  range the maximum output + 1
+ * @return a pseudo generated random number between 0 and range - 1
+ */
 uint32_t syscall_rand(uint32_t range) {
   return _get_rand(range);
 }
