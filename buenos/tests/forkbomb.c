@@ -5,7 +5,8 @@
 
 int main() {
   /* 2**10 should be plenty! */
-  for (int i = 0; i < 10; i++) {
+  int i = 0;
+  for (; i < 10; i++) {
     pid_t pid = syscall_fork();
     if (pid < 0) {
       /* This will probably be printed multiple times, since multiple children

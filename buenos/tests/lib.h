@@ -66,6 +66,8 @@ int syscall_sem_destroy(usr_sem_t* destroy);
 
 /* The library functions which are just wrappers to the _syscall function. */
 
+uint32_t syscall_rand(uint32_t);
+
 void syscall_halt(void);
 
 int syscall_exec(const char *filename);
@@ -84,6 +86,7 @@ int syscall_delete(const char *filename);
 int syscall_fork();
 int syscall_getpid();
 void *syscall_memlimit(void *heap_end);
+
 
 
 /* The following functions and macros are not system calls, but convenient

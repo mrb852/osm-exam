@@ -130,5 +130,9 @@ clean:	utilclean
 real-clean: clean
 	rm -f $(DEPS)
 
+test:
+	cd tests && make
+
 .PHONY: clean
 .PHONY: doc
+.PHONY: test

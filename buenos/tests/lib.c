@@ -42,6 +42,9 @@
 #include "proc/syscall.h"
 #include "tests/lib.h"
 
+uint32_t syscall_rand(uint32_t range) {
+  return (uint32_t)_syscall(SYSCALL_RAND, range, 0, 0);
+}
 
 /* User semaphore functions. */
 usr_sem_t* syscall_sem_open(usr_sem_t* handle, int value)

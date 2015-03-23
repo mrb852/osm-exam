@@ -53,6 +53,10 @@
 #define V0 user_context->cpu_regs[MIPS_REGISTER_V0]
 
 
+uint32_t syscall_rand(uint32_t range) {
+  return _get_rand(range);
+}
+
 /**
  * Handle system calls. Interrupts are enabled when this function is
  * called.
@@ -93,7 +97,9 @@ void syscall_handle(context_t *user_context)
   case SYSCALL_GETPID:
     V0 = process_get_current_process();
     break;
-
+  case SYSCALL_RAND:
+    V0 = syscall_rand((uint32_t)A1);
+  break;
     /* Memory allocation */
   case SYSCALL_MEMLIMIT:
     V0 = process_memlimit(A1);

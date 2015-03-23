@@ -50,6 +50,7 @@
 #define SYSCALL_FORK      0x104
 #define SYSCALL_MEMLIMIT  0x105
 #define SYSCALL_GETPID    0x106
+#define SYSCALL_RAND      0x107
 
 /* I/O. */
 #define SYSCALL_OPEN    0x201
@@ -66,6 +67,8 @@
 #define SYSCALL_SEM_PROCURE 0x301
 #define SYSCALL_SEM_VACATE  0x302
 #define SYSCALL_SEM_DESTROY 0x303
+
+
 
 /* Console file handles. */
 #define FILEHANDLE_STDIN    0
