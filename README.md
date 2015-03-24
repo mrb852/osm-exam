@@ -6,7 +6,6 @@ Final exam in 'Operating Systems' at the Department of Computer Science – Univ
 ###Implementation Tasks
 
 * [x] P1
-* * [x] Tests
 * [x] P2
 * [ ] P3
 * [x] P4
