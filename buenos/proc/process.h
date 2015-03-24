@@ -84,7 +84,7 @@ typedef struct {
   openfile_t files[CONFIG_MAX_OPEN_FILES];
 
   /* Tells if the process should kill itself */
-  int kamikaze_mode;
+  int die;
 } process_control_block_t;
 
 void process_start(process_id_t pid);
@@ -104,7 +104,7 @@ int process_fork();
  * @param kill_child_processes  if true, process_kill is called recursively on child processes
  * @return        0 upon success, a negative value on error.
  */
-int process_kill(process_id_t pid, int retval, int kill_child_processes);
+int process_kill(process_id_t pid, int retval);
 
 /* Return PID of current process. */
 process_id_t process_get_current_process();

@@ -46,8 +46,8 @@ uint32_t syscall_rand(uint32_t range) {
   return (uint32_t)_syscall(SYSCALL_RAND, range, 0, 0);
 }
 
-int syscall_kill(pid_t pid, int retval, int kill_child_processes) {
-  return (int)_syscall(SYSCALL_KILL, pid, retval, kill_child_processes);
+int syscall_kill(pid_t pid, int retval) {
+  return (int)_syscall(SYSCALL_KILL, pid, retval, 0);
 }
 
 /* User semaphore functions. */

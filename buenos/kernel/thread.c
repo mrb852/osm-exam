@@ -43,6 +43,7 @@
 #include "kernel/config.h"
 #include "kernel/interrupt.h"
 #include "kernel/idle.h"
+#include "proc/syscall.h"
 
 /** @name Thread library
  *
@@ -334,6 +335,17 @@ void thread_finish(void)
     /* not possible without a stack? alternative in assembler? */
     KERNEL_PANIC("thread_finish(): thread was not destroyed");
   }
+}
+
+void thread_finish_pid(int pid, int retval) {
+  _interrupt_disable();
+  spinlock_acquire(&thread_table_slock);
+  thread_table_t* t = thread_get_thread_entry_by_pid(pid);
+  t->user_context->cpu_regs[3] = SYSCALL_EXIT;
+  t->user_context->cpu_regs[4] = retval;
+  t->user_context->pc = 0x00001014;
+  spinlock_release(&thread_table_slock);
+  _interrupt_enable();
 }
 
 /** @} */
