@@ -14,4 +14,4 @@ Final exam in 'Operating Systems' at the Department of Computer Science – Univ
 
 * [ ] T1
 * [ ] T2
-* [ ] T3
+* [x] T3
