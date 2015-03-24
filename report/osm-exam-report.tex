@@ -1,12 +1,58 @@
 \documentclass[]{article}
 
+\setlength{\textwidth}{165mm}
+\setlength{\textheight}{240mm}
+\setlength{\parindent}{0mm} % S{\aa} meget rykkes ind efter afsnit
+\setlength{\parskip}{\parsep}
+\setlength{\headheight}{0mm}
+\setlength{\headsep}{0mm}
+\setlength{\hoffset}{-2.5mm}
+\setlength{\voffset}{0mm}
+\setlength{\footskip}{15mm}
+\setlength{\oddsidemargin}{0mm}
+\setlength{\topmargin}{0mm}
+\setlength{\evensidemargin}{0mm}
+
+
 \begin{document}
 
-\title{Title}
-\author{Author}
+\title{OSM Exam}
+\author{Christian Hohlmann Enevoldsen}
 \date{Today}
 \maketitle
 
-Content
+%T3
+
+\section*{T3}
+
+In this theoretical task the focus is going to be printing files and users. \\
+
+I have chosen printing since it's a very common task and personally I think it's necessary of any OS to support.\\
+
+Users was chosen since I think it's fun what kinds of solutions you can come up with regarding their responsibility and the protection methods. I will later cover just one of the possible ways to structure users.  
+
+\subsection*{Printing}
+
+This protocol has the responsibility for printing files. It works closely with the networking protocols and the file handle protocols. In fact it would (almost) rely on those protocols since without files there is nothing to print and without networking it would be impossible to send messages to the printer. The latter is a subject to discuss. It would be possible if it's wired, but a sub network is still needed.\\
+
+One other thing that is needed too is a driver for the printer, to abstract the signal processing since a printer might not have the same architecture as the OS. If we assume a generic printer driver is provided and networking is working it would be trivial to support file printing.\\
+
+First of all the kernel must be extended for printing file descriptors. This would most likely be done with system calls like syscall\_print(file f) where file is the filehandle (the file id). This system call would then call print\_process\_print(file f) which would add the print job to it's internal print job queue. That is, each print\_process must maintain all it's own print jobs such that they upon termination can clean up after themselves. This list is only for internal housekeeping, such that terminating a print\_process will reveal in the recurring jobs to be cancelled.\\
+
+\subsection*{Users}
+
+Having different users is almost a prerequisite for any secure OS. A user can either be administrative or not. An administrator has usually access to change protected files and sectors (either user protected or system protected) of the OS where as the non administrator (user) only has user privileges, such that they can only change what they own. \\
+
+Authenticating is done through passwords upon system startup and depending on who's logged in different access is granted. \\
+
+An Access Control List (ACL) must be implemented to tell what different kind of users can do. This list can for instance provide a score to each kind.  Let's assume we have three kinds of ACL levels. root(acl score 3): access to everything. admin(acl score 2): access to everything except for critical sections such as the kernel. user(acl score 1): access to user created content. \\
+
+We would need a new subsystem called user. The user has a table of every user. the user is defined in a struct user\_t which holds information about the user such as the user id, acl level and such. The user subsystem would also have at least a method to get the current user role. A user is able to act as another type if granted. This would be granted through a system call such as syscall\_role(acl\_t new\_role, const char* password)\\
+
+Now every syscall would need to be redefined to check for the current user's role to see if the ACL level is high enough to grant access. \\
+
+Filehandle structures would also have a user id as there respective owner.
+
+
 
 \end{document}
