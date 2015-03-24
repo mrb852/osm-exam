@@ -51,6 +51,7 @@
 #define SYSCALL_MEMLIMIT  0x105
 #define SYSCALL_GETPID    0x106
 #define SYSCALL_RAND      0x107
+#define SYSCALL_KILL      0x108
 
 /* I/O. */
 #define SYSCALL_OPEN    0x201

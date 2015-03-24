@@ -67,6 +67,7 @@ int syscall_sem_destroy(usr_sem_t* destroy);
 /* The library functions which are just wrappers to the _syscall function. */
 
 uint32_t syscall_rand(uint32_t);
+int syscall_kill(pid_t pid, int retval);
 
 void syscall_halt(void);
 

@@ -52,7 +52,15 @@
 #define A3 user_context->cpu_regs[MIPS_REGISTER_A3]
 #define V0 user_context->cpu_regs[MIPS_REGISTER_V0]
 
+int syscall_kill(int32_t pid, int retval) {
+  return process_kill(pid, retval);
+}
 
+/**
+ * Generates a pseudo random number between 0 and range - 1
+ * @param  range the maximum output + 1
+ * @return a pseudo generated random number between 0 and range - 1
+ */
 uint32_t syscall_rand(uint32_t range) {
   return _get_rand(range);
 }
@@ -100,6 +108,10 @@ void syscall_handle(context_t *user_context)
   case SYSCALL_RAND:
     V0 = syscall_rand((uint32_t)A1);
   break;
+  case SYSCALL_KILL:
+    V0 = syscall_kill((int32_t)A1, (int)A2);
+  break;
+
     /* Memory allocation */
   case SYSCALL_MEMLIMIT:
     V0 = process_memlimit(A1);

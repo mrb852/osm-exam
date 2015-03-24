@@ -1,12 +1,27 @@
 /*
- * Userland exec test; child 2.
+ * Userland exec test; child 1.
  */
 
 #include "tests/lib.h"
 
-static const char msg[] = "Hello from child 2; I'll return the value 5.\n";
+#define wait_clock 1000
+
+void wait(int time) {
+
+  int ct = 0; int i = 0;
+  while(ct < time) {
+    i = 0;
+    while(i++ < wait_clock); {
+      ct++;
+    }
+  }
+}
 
 int main() {
-  syscall_write(1, msg, sizeof(msg));
-  return 5;
+  syscall_write(1, "Running executable 2\n\n", 36);
+  while(1) {
+    wait(100);
+    syscall_write(1, "Myaaaaaahhhhhh\n\n", 36);
+  };
+  return 0;
 }

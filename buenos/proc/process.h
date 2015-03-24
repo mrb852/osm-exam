@@ -82,6 +82,9 @@ typedef struct {
 
   /* The files opened by this process. */
   openfile_t files[CONFIG_MAX_OPEN_FILES];
+
+  /* Tells if the process should kill itself */
+  int die;
 } process_control_block_t;
 
 void process_start(process_id_t pid);
@@ -92,6 +95,16 @@ process_id_t process_spawn(const char* executable);
 void process_finish(int retval);
 int process_join(process_id_t pid);
 int process_fork();
+
+/* Kills the process with the given process id or if in userland */
+/**
+ * Kills the process with the given process id
+ * @param  pid    the process id
+ * @param  retval the return value of the process
+ * @param kill_child_processes  if true, process_kill is called recursively on child processes
+ * @return        0 upon success, a negative value on error.
+ */
+int process_kill(process_id_t pid, int retval);
 
 /* Return PID of current process. */
 process_id_t process_get_current_process();
