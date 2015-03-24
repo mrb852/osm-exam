@@ -96,6 +96,16 @@ void process_finish(int retval);
 int process_join(process_id_t pid);
 int process_fork();
 
+/* Kills the process with the given process id or if in userland */
+/**
+ * Kills the process with the given process id
+ * @param  pid    the process id
+ * @param  retval the return value of the process
+ * @param kill_child_processes  if true, process_kill is called recursively on child processes
+ * @return        0 upon success, a negative value on error.
+ */
+int process_kill(process_id_t pid, int retval, int kill_child_processes);
+
 /* Return PID of current process. */
 process_id_t process_get_current_process();
 

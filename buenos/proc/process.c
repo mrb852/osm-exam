@@ -103,6 +103,7 @@ void process_start(process_id_t pid)
 
   file = vfs_open((char *)executable);
   /* Make sure the file existed and was a valid ELF file */
+  kprintf("executable: %s\n", executable);
   KERNEL_ASSERT(file >= 0);
   KERNEL_ASSERT(elf_parse_header(&elf, file));
 
@@ -395,11 +396,18 @@ int process_fork()
 
 /* Stop the current process and the thread it runs in.  Sets the return value as
    well. */
-void process_finish(int retval)
-{
+void process_finish(int retval) {
+  process_kill(process_get_current_process(), retval, 0);
+}
+
+int process_kill(process_id_t pid, int retval, int kill_child_processes) {
+
+  if (pid < 0 || pid >= PROCESS_MAX_PROCESSES) {
+    kprintf("Process with pid %d does not exists\n", pid);
+    return -1;
+  }
   interrupt_status_t intr_status;
-  process_id_t pid = process_get_current_process();
-  thread_table_t *thread = thread_get_current_thread_entry();
+  thread_table_t *thread = thread_get_thread_entry_by_pid(pid);
 
   intr_status = _interrupt_disable();
   spinlock_acquire(&process_table_slock);
@@ -419,20 +427,30 @@ void process_finish(int retval)
   /* Move any `process_join` call lying in Buenos' sleep queue into the
      scheduler's ready-to-run list, so it can exit. */
   sleepq_wake_all(&process_table[pid]);
-
   /* BONUS: Once your `sycall_kill` is in place, you may want to use it to kill
      all children that haven't been joined.  Right now they just keep running
      with a non-process parent. */
   for (process_id_t i = 0; i < PROCESS_MAX_PROCESSES; i++) {
     if (process_table[i].parent == pid) {
       process_table[i].parent = -1;
+      if (kill_child_processes) {
+        kprintf("killing process with pid: %d\n\n", i);
+        spinlock_release(&process_table_slock);
+        _interrupt_set_state(intr_status);
+        if (process_kill(i, 0, 0) != 0) {
+          kprintf("Error killing child process with pid: %d\n", i);
+          return -2;
+        }
+      }
     }
   }
 
   spinlock_release(&process_table_slock);
   _interrupt_set_state(intr_status);
 
+  kprintf("killing process with pid: %d\n\n", pid);
   thread_finish();
+  return 0;
 }
 
 /* Wait for the child process to finish, then return its return value.  Returns
@@ -560,5 +578,6 @@ process_control_block_t *process_get_current_process_entry()
 {
   return &process_table[process_get_current_process()];
 }
+
 
 /** @} */
