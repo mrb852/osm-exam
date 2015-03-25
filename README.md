@@ -12,6 +12,6 @@ Final exam in 'Operating Systems' at the Department of Computer Science – Univ
 
 ###Theoretical Tasks
 
-* [ ] T1
+* [x] T1 (not the best solution. Give it a shot more if time enough)
 * [ ] T2
 * [x] T3
