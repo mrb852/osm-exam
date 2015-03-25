@@ -13,6 +13,15 @@
 \setlength{\topmargin}{0mm}
 \setlength{\evensidemargin}{0mm}
 
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\usepackage{caption}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
 
 \begin{document}
 
@@ -20,6 +29,74 @@
 \author{Christian Hohlmann Enevoldsen}
 \date{Today}
 \maketitle
+
+%T1
+
+\section*{T1}
+
+\begin{lstlisting}[label=bicycle-code,caption=Bicycle Factory]
+
+sem wheel_sem = sem_create(1);
+sem frame_sem = sem_create(1);
+mutex bicycles_mutex = mutex_create();
+
+void frame() {
+  while (true) {
+    wait(frame_sem);
+    acquire(bicycles_mutex);
+
+    if (bicycles_left <= 0) {
+      release(bicycles_mutex);
+      signal(frame_sem);
+      exit_thread(NULL);
+    }
+
+    b = bicycles[BICYCLES_TO_MAKE - bicycles_left];
+    b.frame = 1;
+
+    if (b.frame == 1 && b.wheels == 2) {
+      bicycles_left--;
+    }
+
+    signal(frame_sem);
+    release(bicycles_mutex);
+  }
+
+}
+
+void wheel() {
+  while (true) {
+
+    wait(wheel_sem);
+    acquire(bicycles_mutex);
+
+    if (bicycles_left <= 0) {
+      release(bicycles_mutex);
+      signal(wheel_sem);
+      exit_thread(NULL);
+    }
+
+    b = bicycles[BICYCLES_TO_MAKE - bicycles_left];
+    b.wheels = 2;
+
+    if (b.frame == 1 && b.wheels == 2) {
+      bicycles_left--;
+    }
+
+    signal(wheel_sem);
+    release(bicycles_mutex);
+    
+  }
+}
+
+\end{lstlisting}
+
+
+\vspace{2 mm}
+
+\subsection*{Correctness}
+
+The pseudo code uses mutex and semaphores to synchronize and protect the bicycles. The semaphores is used to make sure that the bicycle only has 2 wheels and one frame and the mutex lock is used to make sure that two threads won't interfere with each other.
 
 %T3
 
