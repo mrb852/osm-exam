@@ -42,6 +42,15 @@
 #include "proc/syscall.h"
 #include "tests/lib.h"
 
+
+int syscall_pipe(int fds[2]) {
+  return (int)_syscall(SYSCALL_PIPE, (uint32_t)fds, 0, 0);
+}
+
+int syscall_dup(int oldfd, int newfd) {
+  return (int)_syscall(SYSCALL_DUP, (uint32_t)oldfd, (uint32_t)newfd, 0);
+}
+
 uint32_t syscall_rand(uint32_t range) {
   return (uint32_t)_syscall(SYSCALL_RAND, range, 0, 0);
 }

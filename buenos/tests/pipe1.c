@@ -16,7 +16,7 @@ int main() {
     syscall_dup(ofds[1], 1);
     syscall_dup(efds[1], 2);
     syscall_exec(VOLUME "pipe2");
-  } 
+  }
   else {
     int n = syscall_read(ofds[0], buf, sizeof(buf));
     (void) syscall_join(pid);

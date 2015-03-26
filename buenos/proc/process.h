@@ -83,8 +83,6 @@ typedef struct {
   /* The files opened by this process. */
   openfile_t files[CONFIG_MAX_OPEN_FILES];
 
-  /* Tells if the process should kill itself */
-  int die;
 } process_control_block_t;
 
 void process_start(process_id_t pid);

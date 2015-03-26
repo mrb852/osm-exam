@@ -5,4 +5,4 @@ init/main.o: init/main.c drivers/bootargs.h drivers/device.h lib/types.h \
  kernel/config.h kernel/assert.h kernel/panic.h kernel/halt.h \
  kernel/idle.h kernel/interrupt.h kernel/kmalloc.h kernel/scheduler.h \
  kernel/synch.h kernel/sleepq.h lib/debug.h net/network.h drivers/gnd.h \
- vm/vm.h proc/usr_sem.h
+ proc/pipe.h vm/vm.h proc/usr_sem.h

@@ -67,6 +67,8 @@ int syscall_sem_destroy(usr_sem_t* destroy);
 /* The library functions which are just wrappers to the _syscall function. */
 
 uint32_t syscall_rand(uint32_t);
+int syscall_pipe(int fds[2]);
+int syscall_dup(int oldfd, int newfd);
 int syscall_kill(pid_t pid, int retval);
 
 void syscall_halt(void);
@@ -87,6 +89,7 @@ int syscall_delete(const char *filename);
 int syscall_fork();
 int syscall_getpid();
 void *syscall_memlimit(void *heap_end);
+
 
 
 

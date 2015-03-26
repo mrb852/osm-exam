@@ -36,7 +36,7 @@
 # $Id: Makefile,v 1.6 2005/05/09 00:05:44 jaatroko Exp $
 
 # Add your _userland_ program sources to this variable:
-SOURCES  := $(filter-out lib.c pipe1.c pipe2.c, $(wildcard *.c))
+SOURCES  := $(filter-out lib.c, $(wildcard *.c))
 
 OBJECTS  := $(patsubst %.c, %.o, $(SOURCES))
 TARGETS  := $(patsubst %.o, %, $(OBJECTS))

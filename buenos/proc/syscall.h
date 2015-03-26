@@ -62,6 +62,8 @@
 #define SYSCALL_CREATE  0x206
 #define SYSCALL_REMOVE  0x207
 #define SYSCALL_TELL    0x208
+#define SYSCALL_PIPE    0x209
+#define SYSCALL_DUP     0x210
 
 /* User semaphore support. */
 #define SYSCALL_SEM_OPEN    0x300

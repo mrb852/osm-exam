@@ -55,8 +55,10 @@
 #include "lib/libc.h"
 #include "net/network.h"
 #include "proc/process.h"
+ #include "proc/pipe.h"
 #include "vm/vm.h"
 #include "proc/usr_sem.h"
+
 
 /**
  * Fallback function for system startup. This function is executed
@@ -218,6 +220,9 @@ void init(void)
 
   kwrite("Initializing user semaphores\n");
   usr_sem_init();
+
+  kwrite("Initializing pipe system\n");
+  pipe_init();
 
   kwrite("Initializing device drivers\n");
   device_init();

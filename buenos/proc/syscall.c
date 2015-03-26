@@ -41,6 +41,7 @@
 #include "proc/io.h"
 #include "proc/syscall.h"
 #include "proc/process.h"
+#include "proc/pipe.h"
 #include "kernel/assert.h"
 #include "drivers/device.h"
 #include "drivers/gcd.h"
@@ -141,6 +142,12 @@ void syscall_handle(context_t *user_context)
     break;
   case SYSCALL_WRITE:
     V0 = io_write((openfile_t) A1, (void*) A2, (int) A3);
+    break;
+  case SYSCALL_PIPE:
+    V0 = pipe_pipe((int*)A1);
+    break;
+  case SYSCALL_DUP:
+    V0 = pipe_dup((int)A1, (int)A2);
     break;
 
     /* User semaphores */
