@@ -29,6 +29,7 @@
 #include "fs/vfs.h"
 #include "kernel/assert.h"
 #include "proc/syscall.h"
+#include "proc/pipe.h"
 
 #include "proc/io.h"
 
@@ -136,6 +137,24 @@ int io_read(openfile_t file, void* buffer, int length)
 {
   int res;
 
+  // Don't pipe if writing to std
+  if (file > 2) {
+    // Get the pipe for the file
+    pipe_t *pipe = pipe_get_pipe(file);
+
+    // Don't read to empty pipes
+    if (pipe == NULL) {
+      KERNEL_PANIC("Cannot read from empty pipe\n");
+    }
+
+    // Get the read end and update the file
+    file = pipe->read_end;
+
+    // Pipe read to the buffer
+    pipe_read(buffer, length, pipe);
+  }
+
+
   switch(file) {
   case FILEHANDLE_STDIN:
     res = tty_read(buffer, length);
@@ -169,6 +188,24 @@ int io_write(int file, void* buffer, int length)
 {
   int res;
 
+  // Don't pipe if writing to std
+  if (file > 2) {
+
+    // Get the pipe for the file
+    pipe_t *pipe = pipe_get_pipe(file);
+
+    // Don't read to empty pipes
+    if (pipe == NULL) {
+      KERNEL_PANIC("Cannot write from empty pipe\n");
+    }
+
+    // Get the read end and update the file
+    file = pipe->write_end;
+
+    // Write to the pipe buffer
+    pipe_write(buffer, length, pipe);
+  }
+
   switch(file) {
   case FILEHANDLE_STDIN:
     res = VFS_INVALID_PARAMS;
@@ -190,6 +227,7 @@ int io_write(int file, void* buffer, int length)
       res = vfs_write(file, buffer, length);
     }
   }
+  //
 
   return res;
 }

@@ -68,6 +68,9 @@ int stringcmp(const char *str1, const char *str2);
 char *stringcopy(char *target, const char *source, int buflen);
 int strlen(const char *str);
 
+void strcat(char* dest, const char* src);
+void str_read(char* src, char* buffer, int length);
+
 /* memory copy */
 void memcopy(int buflen, void *target, const void *source);
 

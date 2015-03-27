@@ -165,6 +165,43 @@ char *stringcopy(char *target, const char *source, int buflen)
   return ret;
 }
 
+/**
+ * Appends a string to another string
+ * @param  dest the string that will get appended
+ * @param  src  the string to append
+ */
+void strcat(char* dest, const char* src) {
+  // Find the end of the dest string
+  if(*dest != '\0')
+    while(*++dest != '\0');
+
+  // Copy every character from the src
+  while(*src != '\0') {
+    *dest++ = *src++;
+  }
+  // Null terminate the string
+  *dest = '\0';
+}
+
+/**
+ * pops the first n characters from a string and puts it into a buffer
+ * @param src    the string to pop from
+ * @param buffer the destination for the popped characters
+ * @param length the amount of characters to pop
+ */
+void str_read(char* src, char* buffer, int length) {
+  int i = 0;
+  for (; i < length; ++i) {
+    // append the first character from the src to the buffer
+    buffer[i] = src[0];
+    // move every character one step back (the popping)
+    for (char *ps = src; *ps != '\0'; ps++)
+      *ps = *(ps+1);
+  }
+  // null terminate
+  buffer[i] = '\0';
+}
+
 
 /**
  * Copies memory buffer of size buflen from source to target. The

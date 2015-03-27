@@ -41,11 +41,11 @@
 #include "proc/io.h"
 #include "proc/syscall.h"
 #include "proc/process.h"
-#include "proc/pipe.h"
 #include "kernel/assert.h"
 #include "drivers/device.h"
 #include "drivers/gcd.h"
 #include "proc/usr_sem.h"
+#include "proc/pipe.h"
 
 #define A0 user_context->cpu_regs[MIPS_REGISTER_A0]
 #define A1 user_context->cpu_regs[MIPS_REGISTER_A1]
@@ -144,7 +144,7 @@ void syscall_handle(context_t *user_context)
     V0 = io_write((openfile_t) A1, (void*) A2, (int) A3);
     break;
   case SYSCALL_PIPE:
-    V0 = pipe_pipe((int*)A1);
+    V0 = pipe_pipe((int *)A1);
     break;
   case SYSCALL_DUP:
     V0 = pipe_dup((int)A1, (int)A2);

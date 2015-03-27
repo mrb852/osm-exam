@@ -337,13 +337,24 @@ void thread_finish(void)
   }
 }
 
+/**
+ * Finishes a thread by it's id
+ * @param pid    the thread id
+ * @param retval the retval for the thread
+ */
 void thread_finish_pid(int pid, int retval) {
+  // Disable cpu interruption
   _interrupt_disable();
+  // protect/lock the thread_table
   spinlock_acquire(&thread_table_slock);
   thread_table_t* t = thread_get_thread_entry_by_pid(pid);
+  // Make the program counter call SYSCALL EXIT
   t->user_context->cpu_regs[3] = SYSCALL_EXIT;
+  // Set the return value for process_finish()
   t->user_context->cpu_regs[4] = retval;
+  // Update the program counter make to syscall
   t->user_context->pc = 0x00001014;
+  // release and enable interrupts
   spinlock_release(&thread_table_slock);
   _interrupt_enable();
 }

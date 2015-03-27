@@ -1,6 +1,3 @@
-/*
- * Userland exec test; child 1.
- */
 
 #include "tests/lib.h"
 

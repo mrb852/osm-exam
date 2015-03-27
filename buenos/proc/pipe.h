@@ -9,17 +9,20 @@
 typedef uint32_t pipe_id_t;
 
 typedef struct {
-  semaphore_t *w_lock;
-  semaphore_t *r_lock;
   char buffer[PIPE_BUFFER_LENGTH];
   uint32_t length;
   int read_end;
   int write_end;
+  int write_id;
+  int read_id;
   int free;
-  int is_empty;
+  pipe_id_t id;
 } pipe_t;
 
 void pipe_init();
+pipe_t* pipe_get_pipe(int fd);
+void pipe_write(char* buffer, int length, pipe_t* pipe);
+void pipe_read(void* buffer, int length, pipe_t* pipe);
 int pipe_pipe(int fds[2]);
 int pipe_dup(int oldfd, int newfd);
 

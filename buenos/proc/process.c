@@ -437,9 +437,19 @@ void process_finish(int retval) {
   thread_finish();
 }
 
+/**
+ * Forcefully kills a process
+ * @param  pid    id of process
+ * @param  retval killing process's return value
+ * @return        0 on success -1 on error
+ */
 int process_kill(process_id_t pid, int retval) {
+
+  // Only kill valid processes
   if (pid < 0 || pid >= PROCESS_MAX_PROCESSES) { return -1; }
+
   spinlock_acquire(&process_table_slock);
+  // Finish the thread
   thread_finish_pid(pid, retval);
   spinlock_release(&process_table_slock);
   return 0;

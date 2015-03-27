@@ -94,6 +94,7 @@ void thread_switch(void);
 void thread_goto_userland(context_t *usercontext);
 
 void thread_finish(void);
+
 void thread_finish_pid(int pid, int retval);
 
 #define USERLAND_ENABLE_BIT 0x00000010
