@@ -170,7 +170,7 @@ char *stringcopy(char *target, const char *source, int buflen)
  * @param  dest the string that will get appended
  * @param  src  the string to append
  */
-void strcat(char* dest, const char* src) {
+void str_cat(char* dest, const char* src) {
   // Find the end of the dest string
   if(*dest != '\0')
     while(*++dest != '\0');

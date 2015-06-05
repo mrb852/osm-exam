@@ -1,0 +1,184 @@
+
+Discarded input sections
+
+ .reginfo       0x0000000000000000       0x18 _syscall.o
+ .reginfo       0x0000000000000000       0x18 lib.o
+ .reginfo       0x0000000000000000       0x18 sem_barrier_p1.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+                0x0000000000001000                . = 0x1000
+
+ro_segment      0x0000000000001000     0x2a90
+ *(.text .rodata .rodata.*)
+ .text          0x0000000000001000       0x24 crt.o
+                0x0000000000001000                _start
+                0x0000000000001018                __main
+ .text          0x0000000000001024        0xc _syscall.o
+                0x0000000000001024                _syscall
+ .text          0x0000000000001030     0x2758 lib.o
+                0x0000000000001030                syscall_pipe
+                0x0000000000001078                syscall_dup
+                0x00000000000010c8                syscall_rand
+                0x000000000000110c                syscall_kill
+                0x000000000000115c                syscall_sem_open
+                0x00000000000011ac                syscall_sem_p
+                0x00000000000011f4                syscall_sem_v
+                0x000000000000123c                syscall_sem_destroy
+                0x0000000000001284                syscall_halt
+                0x00000000000012c4                syscall_exec
+                0x000000000000130c                syscall_execp
+                0x0000000000001360                syscall_exit
+                0x00000000000013a8                syscall_join
+                0x00000000000013f0                syscall_fork
+                0x0000000000001430                syscall_getpid
+                0x0000000000001470                syscall_memlimit
+                0x00000000000014b8                syscall_open
+                0x0000000000001500                syscall_close
+                0x0000000000001548                syscall_read
+                0x000000000000159c                syscall_seek
+                0x00000000000015ec                syscall_write
+                0x0000000000001640                syscall_create
+                0x0000000000001690                syscall_remove
+                0x00000000000016d8                strlen
+                0x000000000000173c                strcpy
+                0x00000000000017e4                strncpy
+                0x00000000000018c0                strcat
+                0x0000000000001918                strncat
+                0x0000000000001a0c                strcmp
+                0x0000000000001a54                strncmp
+                0x0000000000001b88                memcmp
+                0x0000000000001c64                strstr
+                0x0000000000001d08                memset
+                0x0000000000001d84                memcpy
+                0x0000000000001e18                putc
+                0x0000000000001e5c                puts
+                0x0000000000001f08                getc_raw
+                0x0000000000001f4c                getc
+                0x0000000000001fa4                gets
+                0x0000000000002058                readline
+                0x0000000000002f3c                printf
+                0x0000000000002fac                snprintf
+                0x0000000000003014                get_heap_end
+                0x0000000000003048                malloc
+                0x00000000000032b0                free
+                0x00000000000034b4                calloc
+                0x0000000000003574                realloc
+                0x0000000000003690                atoi
+ .rodata        0x0000000000003788      0x110 lib.o
+ .text          0x0000000000003898      0x110 sem_barrier_p1.o
+                0x0000000000003898                main
+ .rodata        0x00000000000039a8       0xe8 sem_barrier_p1.o
+
+rw_segment      0x0000000000004000        0x4
+ *(.data .bss COMMON)
+ .data          0x0000000000004000        0x0 crt.o
+ .bss           0x0000000000004000        0x0 crt.o
+ .data          0x0000000000004000        0x0 _syscall.o
+ .bss           0x0000000000004000        0x0 _syscall.o
+ .data          0x0000000000004000        0x0 lib.o
+ .bss           0x0000000000004000        0x4 lib.o
+                0x0000000000004000                free_list
+ .data          0x0000000000004004        0x0 sem_barrier_p1.o
+ .bss           0x0000000000004004        0x0 sem_barrier_p1.o
+                0x0000000000004004                BINARY_ENDS_HERE = .
+LOAD crt.o
+LOAD _syscall.o
+LOAD lib.o
+LOAD sem_barrier_p1.o
+OUTPUT(sem_barrier_p1 elf32-bigmips)
+
+.reginfo        0x0000000000000000       0x18
+ .reginfo       0x0000000000000000       0x18 crt.o
+
+.pdr            0x0000000000000000      0x700
+ .pdr           0x0000000000000000       0x40 crt.o
+ .pdr           0x0000000000000040       0x20 _syscall.o
+ .pdr           0x0000000000000060      0x680 lib.o
+ .pdr           0x00000000000006e0       0x20 sem_barrier_p1.o
+
+.mdebug.abi32   0x0000000000000000        0x0
+ .mdebug.abi32  0x0000000000000000        0x0 lib.o
+ .mdebug.abi32  0x0000000000000000        0x0 sem_barrier_p1.o
+
+.comment        0x0000000000000000       0x11
+ .comment       0x0000000000000000       0x11 lib.o
+                                         0x12 (size before relaxing)
+ .comment       0x0000000000000000       0x12 sem_barrier_p1.o
+
+.gnu.attributes
+                0x0000000000000000       0x10
+ .gnu.attributes
+                0x0000000000000000       0x10 lib.o
+ .gnu.attributes
+                0x0000000000000010       0x10 sem_barrier_p1.o
+
+Cross Reference Table
+
+Symbol                                            File
+__main                                            crt.o
+_start                                            crt.o
+_syscall                                          _syscall.o
+                                                  lib.o
+atoi                                              lib.o
+calloc                                            lib.o
+free                                              lib.o
+free_list                                         lib.o
+get_heap_end                                      lib.o
+getc                                              lib.o
+getc_raw                                          lib.o
+gets                                              lib.o
+main                                              sem_barrier_p1.o
+                                                  crt.o
+malloc                                            lib.o
+memcmp                                            lib.o
+memcpy                                            lib.o
+memset                                            lib.o
+printf                                            lib.o
+                                                  sem_barrier_p1.o
+putc                                              lib.o
+puts                                              lib.o
+                                                  sem_barrier_p1.o
+readline                                          lib.o
+                                                  sem_barrier_p1.o
+realloc                                           lib.o
+snprintf                                          lib.o
+strcat                                            lib.o
+strcmp                                            lib.o
+strcpy                                            lib.o
+strlen                                            lib.o
+strncat                                           lib.o
+strncmp                                           lib.o
+strncpy                                           lib.o
+strstr                                            lib.o
+syscall_close                                     lib.o
+syscall_create                                    lib.o
+syscall_dup                                       lib.o
+syscall_exec                                      lib.o
+syscall_execp                                     lib.o
+syscall_exit                                      lib.o
+syscall_fork                                      lib.o
+syscall_getpid                                    lib.o
+syscall_halt                                      lib.o
+syscall_join                                      lib.o
+syscall_kill                                      lib.o
+syscall_memlimit                                  lib.o
+syscall_open                                      lib.o
+syscall_pipe                                      lib.o
+syscall_rand                                      lib.o
+syscall_read                                      lib.o
+syscall_remove                                    lib.o
+syscall_seek                                      lib.o
+syscall_sem_destroy                               lib.o
+syscall_sem_open                                  lib.o
+                                                  sem_barrier_p1.o
+syscall_sem_p                                     lib.o
+                                                  sem_barrier_p1.o
+syscall_sem_v                                     lib.o
+                                                  sem_barrier_p1.o
+syscall_write                                     lib.o

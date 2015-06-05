@@ -88,7 +88,7 @@ void pipe_write(char* buffer, int length, pipe_t* pipe) {
 
   // update the pipe and write to it
   pipe->length += length;
-  strcat(pipe->buffer, buffer);
+  str_cat(pipe->buffer, buffer);
 
   spinlock_release(&pipe_table_slock);
   _interrupt_set_state(intr_status);

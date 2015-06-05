@@ -31,7 +31,7 @@
 
 \title{OSM Exam - Buenos}
 \date{\today}
-\author{Christian Enevoldsen 020691 - MRB852}
+\author{Christian Enevoldsen - MRB852}
 
 \lstset{
   breaklines=true,                 % sets automatic line breaking
@@ -111,7 +111,7 @@ To run the test yourself open the terminal and cd into the benchmark folder. In 
 
 If your want to run with a different number of items replace the MAX definition with the new value and for threads replace 'q' in the main function. Make sure that q is a power of 2. Ie: 2, 4, 8...
 
-The test source code can be found in Appendix C listing 20: queue\_test.c
+The test source code can be found in Appendix A, listing 7: queue\_test.c
 
 
 %p2
@@ -122,7 +122,7 @@ For supporting random number generation syscall\_rand is implemented. This funct
 
 For testing run tests/rand.c.
 
-Changed source code Source code can be found in Appendix C, and test output can be found in the appendix B. To run the test copy the rand.c to a fyams harddisk and set initprogram to it.
+Changed source code can be found in Appendix C, and test output can be found in the appendix B. To run the test copy the rand.c to a fyams harddisk and set initprogram to it.
 
 %FIX ref
 
@@ -164,7 +164,7 @@ int pipe_dup(int oldfd, int newfd);
 
 \end{lstlisting}
 
-As you can see most of the piping is done in the pipe module. This design choice is based on keeping the buenos source as clean as possible and to avoid cluster code. The pipe module must be initialized before any piping works. This is done in the main.c of buenos
+As you can see most of the piping is done in the pipe module. This design choice is based on keeping the buenos source as clean as possible and to avoid cluster code. The pipe module must be initialised before any piping works. This is done in the main.c of buenos
 
 \begin{lstlisting}[caption=main.c]
 void init(void) {
@@ -178,7 +178,7 @@ void init(void) {
 
 pipe\_init() sets up an internal table of all available pipes and assigns default write and read ends towards them aswell as read id's and write id's. The id's are used to query the pipes for finding the right one (for the file descriptors) and the ends are used as the final file descriptor endpoint, which can be changed by calling pipe\_dup. A pipe has an empty buffer that a process can read from and write to. This is done by first calling syscall\_pipe which will set up the pipe for the process, which it can write to by calling syscall\_write and read from by calling syscalll\_read with the respective pipe handle fds[0] or fds[1] for read and write respectfully. 
 
-The existing system calls, read and write is modified to support piping. This is not done directly in the syscalls but rather in io.c which you can see in the Appendix C listing ???
+The existing system calls, read and write is modified to support piping. This is not done directly in the syscalls but rather in io.c which you can see in the Appendix C listing 17
 
 The io.c read/write code is changed such that it will check if a file is related to a pipe (only stdout, stdin, stderr are not piped). if it is then write or read to or from the pipe and continue writing or reading from or to a file.  
 
@@ -234,6 +234,10 @@ The most important lines here are the once affecting the user\_context in the th
 It was tempting at first to just copy the contents of  process\_finish() however that would be doing the same thing twice since the last line calls thread\_finish() (which by the way only would make the calling thread finish) and actually would do the same thing. It would probably also make the system crash since multiple contexts would be freed twice. Instead we force the the thread to exit it self by a pid as described before.
 
 Testing the solution is done by creating a test program kill.c and two other programs that kill.c will call and kill before they finish them selves. The first test program (exec\_child1.c) runs infinitely and doesn't do anything. The second test program (exec\_child2.c) runs infinitely and prints out a message.
+
+\textit{
+exec\_child1.c and exec\_child2.c is completely modified from the buenos handout. Don't rely on them working for other tests that might use them.
+}
 
 "kill.c" executes exec\_child1.c first and counts down from 10 to 0 and then kills it. Next exec\_child2.c is executed and the counter is set to 5 "time" before it is killed. To avoid the screen from being filled with prints and to be able to count down "slowly" I've implemented a pseudo timer. This timer just does a lot of empty executions before returning. When you run the test you can change the wait\_clock in exec\_child2.c and kill.c to suit your computers speed. On i5 dual core I've set it to 1000 which is almost half a second. Other than that make sure that kill, exec\_child1 and exec\_child2 is on disk and their names match exactly if you intend to test the program. 
 
@@ -757,13 +761,23 @@ Kernel: System shutdown complete, powering off
 
 This appendix will contain all the source that is either modified or added to buenos
 
+\begin{lstlisting}[caption=main.c]
+void init(void) {
+  ...
+
+  kwrite("Initializing pipe system\n");
+  pipe_init();
+  ..
+}
+\end{lstlisting}
+
 \begin{lstlisting}[caption=libc.c]
 /**
  * Appends a string to another string
  * @param  dest the string that will get appended
  * @param  src  the string to append
  */
-void strcat(char* dest, const char* src) {
+void str_cat(char* dest, const char* src) {
 
   // Find the end of the dest string
   if(*dest != '\0')
@@ -945,7 +959,7 @@ void pipe_write(char* buffer, int length, pipe_t* pipe) {
 
   // update the pipe and write to it
   pipe->length += length;
-  strcat(pipe->buffer, buffer);
+  str_cat(pipe->buffer, buffer);
 
   spinlock_release(&pipe_table_slock);
   _interrupt_set_state(intr_status);
@@ -1118,7 +1132,7 @@ int pipe_dup(int oldfd, int newfd);
 
 \begin{lstlisting}[caption=libc.h]
 
-void strcat(char* dest, const char* src);
+void str_cat(char* dest, const char* src);
 void str_read(char* src, char* buffer, int length);
 
 \end{lstlisting}
